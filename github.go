@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"regexp"
@@ -239,6 +240,15 @@ func (g *githubClient) listPullRequests(ctx context.Context, owner, repo string,
 			return nil, err
 		}
 		for _, pr := range prs {
+			//if pr == nil {
+			//	log.Println("pr is nil")
+			//}
+			//if pr != nil && pr.MergeCommitSHA == nil {
+			//	log.Printf("merge commit sha is nil, prNumber is %d\n", pr.GetNumber())
+			//}
+			if pr.GetMergeable() == false {
+				log.Printf("mergeable is false, pr number is %d\n", pr.GetNumber())
+			}
 			if len(ret) == opt.Limit {
 				break
 			}
